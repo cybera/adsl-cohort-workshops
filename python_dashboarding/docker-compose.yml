@@ -1,0 +1,57 @@
+version: '3.8'
+
+services: 
+  jupyterlab:
+    user: root
+    build:
+      context: ./docker/jupyterlab
+      dockerfile: Dockerfile
+    ports:
+      - "8890:8888"
+      - "8866:8866"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - CHOWN_HOME=yes
+      - CHOWN_HOME_OPTS=-R
+
+  voila:
+    build:
+      context: ./docker/jupyterlab
+      dockerfile: Dockerfile
+    command: ["voila","--Voila.ip=0.0.0.0", "work/2_app.ipynb"] 
+    ports:
+      - "8867:8866"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+
+  dash:
+    build:
+      context: ./docker/python
+      dockerfile: Dockerfile
+    command: ["python", "app.py"]
+    ports:
+      - "8050:8050"
+    volumes:
+      - ./apps/dash:/app
+
+  streamlit:
+    build:
+      context: ./docker/python
+      dockerfile: Dockerfile
+    command: ["streamlit", "run", "app.py"]
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./apps/streamlit:/app
+
+  panel:
+    build:
+      context: ./docker/python
+      dockerfile: Dockerfile
+    command: ["panel", "serve", "--allow-websocket-origin=*", "--address=0.0.0.0", "--show", "--autoreload", "app.py"]
+    ports:
+      - "5006:5006"
+    volumes:
+      - ./apps/panel:/app
