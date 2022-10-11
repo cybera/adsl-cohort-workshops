@@ -28,7 +28,7 @@ services:
 
   dash:
     build:
-      context: ./docker/dash
+      context: ./docker/python
       dockerfile: Dockerfile
     command: ["python", "app.py"]
     ports:
