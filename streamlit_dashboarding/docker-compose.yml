@@ -1,0 +1,15 @@
+version: '3.8'
+
+services: 
+  streamlit:
+    build:
+      context: ./docker/python
+      dockerfile: Dockerfile
+    command: ["streamlit", "run", "app.py"]
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./apps/streamlit:/app
+    environment:
+      - OPENAI_AUTH
+      - HF_AUTH
