@@ -3,12 +3,16 @@ import pandas as pd
 import plotly.express as px
 import os
 
-os.environ["OPENAI_API_KEY"] = os.environ["OPENAI_AUTH"]
-API_URL = "https://api-inference.huggingface.co/models/hustvl/yolos-tiny"
-headers = {"Authorization": f"Bearer {os.environ['HF_AUTH']}"}
+try:
+    os.environ["OPENAI_API_KEY"] = os.environ["OPENAI_AUTH"]
+    API_URL = "https://api-inference.huggingface.co/models/hustvl/yolos-tiny"
+    headers = {"Authorization": f"Bearer {os.environ['HF_AUTH']}"}
+except:
+    pass
 
 
 # Function to load the dataset
+@st.cache_data
 def load_data(url):
     data = pd.read_csv(url)
     return data
