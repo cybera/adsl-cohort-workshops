@@ -1,6 +1,4 @@
-dash
 pandas
-panel
 streamlit
 requests
 openai
