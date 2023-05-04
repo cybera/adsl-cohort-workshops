@@ -1,3 +1,0 @@
-plotly==5.10.0
-voila
-ipywidgets<8.0
