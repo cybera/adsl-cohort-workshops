@@ -3,12 +3,12 @@ import pandas as pd
 import plotly.express as px
 import os
 
-try:
-    os.environ["OPENAI_API_KEY"] = os.environ["OPENAI_AUTH"]
-    API_URL = "https://api-inference.huggingface.co/models/hustvl/yolos-tiny"
-    headers = {"Authorization": f"Bearer {os.environ['HF_AUTH']}"}
-except:
-    pass
+# try:
+#     os.environ["OPENAI_API_KEY"] = os.environ["OPENAI_AUTH"]
+#     API_URL = "https://api-inference.huggingface.co/models/hustvl/yolos-tiny"
+#     headers = {"Authorization": f"Bearer {os.environ['HF_AUTH']}"}
+# except:
+#     pass
 
 
 # Function to load the dataset
@@ -130,91 +130,91 @@ def styling_examples_page():
     st.markdown("</div>", unsafe_allow_html=True)
 
 #Page 5 chatbot assistant
-import openai
-import os 
+# import openai
+# import os 
 
-# Set the OPENAI_API_KEY environment variable
+# # Set the OPENAI_API_KEY environment variable
 
-class Prompter:
-    def __init__(self, gpt_model):
-        if not os.environ.get("OPENAI_API_KEY"):
-            raise Exception("Please set the OPENAI_API_KEY environment variable")
+# class Prompter:
+#     def __init__(self, gpt_model):
+#         if not os.environ.get("OPENAI_API_KEY"):
+#             raise Exception("Please set the OPENAI_API_KEY environment variable")
 
-        openai.api_key = os.environ.get("OPENAI_API_KEY")
-        self.gpt_model = gpt_model
+#         openai.api_key = os.environ.get("OPENAI_API_KEY")
+#         self.gpt_model = gpt_model
 
-    def prompt_model_return(self, messages: list):
-        response = openai.ChatCompletion.create(model=self.gpt_model, messages=messages)
-        return response["choices"][0]["message"]["content"]
+#     def prompt_model_return(self, messages: list):
+#         response = openai.ChatCompletion.create(model=self.gpt_model, messages=messages)
+#         return response["choices"][0]["message"]["content"]
 
-# Initialize the prompter with the GPT-3.5-turbo model
-prompter = Prompter("gpt-3.5-turbo")
+# # Initialize the prompter with the GPT-3.5-turbo model
+# prompter = Prompter("gpt-3.5-turbo")
 
-# Add a chatbot page function
-def chatbot_page():
-    st.header("Chatbot Assistant")
-    st.write("Interact with the chatbot assistant below.")
+# # Add a chatbot page function
+# def chatbot_page():
+#     st.header("Chatbot Assistant")
+#     st.write("Interact with the chatbot assistant below.")
 
-    user_input = st.text_input("Type your message here:")
-    if st.button("Send"):
-        if user_input:
-            messages = [
-                {"role": "system", "content": "You are a helpful assistant named Bera"},
-                {"role": "user", "content": user_input},
-            ]
-            response = prompter.prompt_model_return(messages)
-            st.write(f"Bera: {response}")
-        else:
-            st.write("Please type a message before sending.")
+#     user_input = st.text_input("Type your message here:")
+#     if st.button("Send"):
+#         if user_input:
+#             messages = [
+#                 {"role": "system", "content": "You are a helpful assistant named Bera"},
+#                 {"role": "user", "content": user_input},
+#             ]
+#             response = prompter.prompt_model_return(messages)
+#             st.write(f"Bera: {response}")
+#         else:
+#             st.write("Please type a message before sending.")
 
-# Page 6 Object  detection model
-import requests
-from PIL import Image, ImageDraw
-import numpy as np
-import io
-import base64
-
-
+# # Page 6 Object  detection model
+# import requests
+# from PIL import Image, ImageDraw
+# import numpy as np
+# import io
+# import base64
 
 
-def query(filename):
-    data = filename.getvalue()
-    response = requests.post(API_URL, headers=headers, data=data)
-    return response.json()
+
+
+# def query(filename):
+#     data = filename.getvalue()
+#     response = requests.post(API_URL, headers=headers, data=data)
+#     return response.json()
     
-def draw_boxes(image, boxes):
-    draw = ImageDraw.Draw(image)
+# def draw_boxes(image, boxes):
+#     draw = ImageDraw.Draw(image)
 
-    for box in boxes:
-        xmin = int(box['box']['xmin'])
-        ymin = int(box['box']['ymin'])
-        xmax = int(box['box']['xmax'])
-        ymax = int(box['box']['ymax'])
-        label = box['label']
-        score = box['score']
+#     for box in boxes:
+#         xmin = int(box['box']['xmin'])
+#         ymin = int(box['box']['ymin'])
+#         xmax = int(box['box']['xmax'])
+#         ymax = int(box['box']['ymax'])
+#         label = box['label']
+#         score = box['score']
 
-        draw.rectangle([(xmin, ymin), (xmax, ymax)], outline=(255, 0, 0), width=2)
-        draw.text((xmin, ymin - 15), f"{label} {score:.2f}", fill=(255, 0, 0))
+#         draw.rectangle([(xmin, ymin), (xmax, ymax)], outline=(255, 0, 0), width=2)
+#         draw.text((xmin, ymin - 15), f"{label} {score:.2f}", fill=(255, 0, 0))
 
-    return image
+#     return image
 
-def object_detection_page():
-    st.title("Object Detection")
+# def object_detection_page():
+#     st.title("Object Detection")
 
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+#     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
-    if uploaded_file is not None:
-        image = Image.open(uploaded_file)
-        st.image(image, caption="Uploaded Image", use_column_width=True)
-        st.write("")
+#     if uploaded_file is not None:
+#         image = Image.open(uploaded_file)
+#         st.image(image, caption="Uploaded Image")
+#         st.write("")
 
-        if st.button("Detect Objects"):
-            with st.spinner("Detecting..."):
-                output = query(uploaded_file)
-                with st.expander("Expandable Section"):
-                    st.write(output)  # Add this line to print the output
-                detected_image = draw_boxes(image, output)
-                st.image(detected_image, caption="Detected Objects", use_column_width=True)
+#         if st.button("Detect Objects"):
+#             with st.spinner("Detecting..."):
+#                 output = query(uploaded_file)
+#                 with st.expander("Expandable Section"):
+#                     st.write(output)  # Add this line to print the output
+#                 detected_image = draw_boxes(image, output)
+#                 st.image(detected_image, caption="Detected Objects")
 
 def main():
     # Read in the dataset
@@ -227,8 +227,8 @@ def main():
         "Plot Data": plot_page,
         "Layout Examples": layout_examples_page,
         "Styling Examples": styling_examples_page,
-        "Chatbot Assistant Bera": chatbot_page,
-        "Object Detection": object_detection_page,
+        # " Bera": chatbot_page,
+        # "Object Detection Model": object_detection_page,
     }
 
     # Show a selection box in the sidebar to choose a page

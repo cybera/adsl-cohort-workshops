@@ -3,3 +3,4 @@ streamlit
 requests
 openai
 numpy
+plotly

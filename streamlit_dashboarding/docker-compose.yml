@@ -10,6 +10,6 @@ services:
       - "8501:8501"
     volumes:
       - ./apps/streamlit:/app
-    environment:
-      - OPENAI_AUTH
-      - HF_AUTH
+    # environment:
+    #   - OPENAI_AUTH
+    #   - HF_AUTH
