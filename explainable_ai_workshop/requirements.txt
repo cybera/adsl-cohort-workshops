@@ -1,0 +1,10 @@
+matplotlib==3.4.3
+pandas
+shap
+xgboost
+transformers
+interpret
+datasets
+torch
+# numpy
+# scipy

@@ -1,0 +1,17 @@
+version: '3.8'
+
+services: 
+  jupyterlab:
+    user: root
+    build:
+      context: ./Docker
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+      - "8866:8866"
+    volumes:
+      - .:/home/jovyan/work
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - CHOWN_HOME=yes
+      - CHOWN_HOME_OPTS=-R
